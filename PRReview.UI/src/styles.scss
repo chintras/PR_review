@@ -1,0 +1,55 @@
+@use '@angular/material' as mat;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background-color: #f0f4f8;
+  color: #1a202c;
+}
+
+// ── Toaster Snackbar ─────────────────────────────────────────────────────────
+.snack-success {
+  --mdc-snackbar-container-color: #22543d;
+  --mdc-snackbar-supporting-text-color: #f0fff4;
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    color: #9ae6b4;
+  }
+}
+
+.snack-error {
+  --mdc-snackbar-container-color: #742a2a;
+  --mdc-snackbar-supporting-text-color: #fff5f5;
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    color: #fc8181;
+  }
+}
+
+// ── Utility ──────────────────────────────────────────────────────────────────
+.full-width {
+  width: 100%;
+}
+
+.text-muted {
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+// ── Scrollbar ────────────────────────────────────────────────────────────────
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+  &:hover { background: #a1a1a1; }
+}

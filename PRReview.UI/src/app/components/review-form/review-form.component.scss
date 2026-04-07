@@ -1,0 +1,147 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+// ── Form Card ────────────────────────────────────────────────────────────────
+.form-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden;
+
+  mat-card-header {
+    background: linear-gradient(135deg, #ebf4ff 0%, #dbeafe 100%);
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #bfdbfe;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1e3a5f;
+    }
+
+    mat-card-subtitle {
+      color: #4a6fa5;
+      margin-top: 4px;
+    }
+  }
+
+  .card-title-icon {
+    color: #2563eb;
+  }
+
+  mat-card-content {
+    padding: 28px 24px !important;
+  }
+}
+
+// ── Form Layout ──────────────────────────────────────────────────────────────
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.field-sm  { flex: 0 1 180px; min-width: 160px; }
+.field-md  { flex: 1 1 200px; min-width: 180px; }
+.field-xs  { flex: 0 1 130px; min-width: 110px; }
+
+.optional-label {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #718096;
+  margin-left: 2px;
+}
+
+.option-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+  color: #718096;
+}
+
+.repo-alias {
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.repo-name {
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+// ── Submit Button ────────────────────────────────────────────────────────────
+.form-actions {
+  display: flex;
+  padding-top: 8px;
+}
+
+.submit-btn {
+  height: 44px;
+  padding: 0 28px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 8px !important;
+
+  ::ng-deep .mdc-button__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-spinner {
+    display: inline-flex;
+    align-items: center;
+    ::ng-deep circle {
+      stroke: white;
+    }
+  }
+}
+
+// ── Loading Banner ───────────────────────────────────────────────────────────
+.loading-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, #1a365d, #2a4a7f);
+  color: white;
+  border-radius: 12px;
+  padding: 20px 28px;
+  box-shadow: 0 4px 16px rgba(26, 54, 93, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: #93c5fd;
+  }
+
+  .loading-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    strong {
+      font-size: 1rem;
+    }
+
+    span {
+      font-size: 0.85rem;
+      opacity: 0.75;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.85; }
+}

@@ -1,0 +1,262 @@
+// ── Summary Card ─────────────────────────────────────────────────────────────
+.summary-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+  overflow: hidden;
+  margin-bottom: 0;
+
+  mat-card-content {
+    padding: 0 !important;
+  }
+}
+
+.summary-header {
+  padding: 24px;
+  background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pr-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.pr-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  opacity: 0.7;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.pr-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.pr-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  font-weight: 500;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+    opacity: 0.8;
+  }
+}
+
+
+// ── Tabs Card ─────────────────────────────────────────────────────────────────
+.tabs-card {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+  overflow: hidden;
+
+  mat-card-content {
+    padding: 0 !important;
+  }
+}
+
+.review-tabs {
+  ::ng-deep .mat-mdc-tab-header {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  ::ng-deep .mat-mdc-tab-body-content {
+    padding: 0;
+  }
+}
+
+.tab-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+.tab-label-text {
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 10px;
+  padding: 1px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 22px;
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.review-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th.mat-mdc-header-cell {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    background: #f8fafc;
+    white-space: nowrap;
+    padding: 12px 16px;
+  }
+
+  td.mat-mdc-cell {
+    padding: 12px 16px;
+    vertical-align: top;
+    border-bottom-color: #f1f5f9;
+    font-size: 0.875rem;
+  }
+
+  .data-row:hover {
+    background: #f8faff;
+  }
+
+  .data-row:last-child td {
+    border-bottom: none;
+  }
+}
+
+// Column widths
+.mat-column-severity  { width: 40px; padding-right: 0 !important; }
+.mat-column-file      { width: 22%; min-width: 180px; }
+.mat-column-line      { width: 70px; text-align: center !important; }
+.mat-column-title     { width: 22%; min-width: 180px; }
+.mat-column-comment   { }
+
+.severity-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+.file-path {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #374151;
+  word-break: break-all;
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+  color: #475569;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: monospace;
+  min-width: 36px;
+}
+
+.item-title {
+  font-weight: 600;
+  color: #1e293b;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.item-comment {
+  color: #475569;
+  line-height: 1.5;
+  display: block;
+  max-width: 520px;
+}
+
+// ── Empty State ──────────────────────────────────────────────────────────────
+.empty-card {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px !important;
+    color: #276749;
+    gap: 12px;
+  }
+
+  .empty-icon {
+    font-size: 56px;
+    width: 56px;
+    height: 56px;
+    color: #38a169;
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+// ── Raw Markdown ──────────────────────────────────────────────────────────────
+.raw-card {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+
+  mat-card-content {
+    padding: 0 16px 16px !important;
+  }
+}
+
+.raw-toggle-btn {
+  font-size: 0.9rem;
+  color: #4a6fa5;
+}
+
+.raw-markdown {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-top: 12px;
+}

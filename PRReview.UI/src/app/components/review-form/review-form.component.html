@@ -1,0 +1,114 @@
+<div class="page-wrapper">
+
+  <!-- ── Form Card ─────────────────────────────────────────────────────── -->
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="card-title-icon">search</mat-icon>
+        Review a Pull Request
+      </mat-card-title>
+      <mat-card-subtitle>
+        Fill in the details below and click <strong>Get Review</strong> to fetch AI-powered feedback.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="review-form">
+
+        <div class="form-row">
+
+          <!-- Base Branch -->
+          <mat-form-field appearance="outline" class="field-xs">
+            <mat-label>Base Branch</mat-label>
+            <mat-select formControlName="baseBranch">
+              @for (branch of baseBranchOptions; track branch) {
+                <mat-option [value]="branch">
+                  <mat-icon class="option-icon">account_tree</mat-icon>
+                  {{ branch }}
+                </mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>merge_type</mat-icon>
+          </mat-form-field>
+
+          <!-- Repository -->
+          <mat-form-field appearance="outline" class="field-md">
+            <mat-label>Repository</mat-label>
+            <mat-select formControlName="repository">
+              <mat-select-trigger>{{ selectedRepoDisplay() }}</mat-select-trigger>
+              @for (repo of repositories(); track repo.alias) {
+                <mat-option [value]="repo.alias">
+                  <span class="repo-alias">{{ repo.alias }}</span>
+                  <span class="repo-name"> - {{ repo.name }}</span>
+                </mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>folder_open</mat-icon>
+            @if (form.get('repository')?.hasError('required') && form.get('repository')?.touched) {
+              <mat-error>Repository is required</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- PR Number -->
+          <mat-form-field appearance="outline" class="field-sm">
+
+            <mat-label>PR Number</mat-label>
+            <input matInput formControlName="prNumber" type="number" min="1" placeholder="e.g. 42">
+            <mat-icon matPrefix>tag</mat-icon>
+            @if (form.get('prNumber')?.invalid && form.get('prNumber')?.touched) {
+              <mat-error>{{ prNumberError }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- PR Branch (optional) -->
+          <mat-form-field appearance="outline" class="field-md">
+            <mat-label>PR Branch <span class="optional-label">(optional)</span></mat-label>
+            <input matInput formControlName="prBranch" placeholder="e.g. feature/my-branch">
+            <mat-icon matPrefix>alt_route</mat-icon>
+            <mat-hint>Derived from PR metadata if omitted</mat-hint>
+          </mat-form-field>
+
+        </div>
+
+        <!-- Submit -->
+        <div class="form-actions">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid || loading()"
+            class="submit-btn"
+          >
+            @if (loading()) {
+              <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
+              Fetching review&hellip;
+            } @else {
+              <ng-container>
+                <mat-icon>rate_review</mat-icon>
+                Get Review
+              </ng-container>
+            }
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- ── Loading Overlay ───────────────────────────────────────────────── -->
+  @if (loading()) {
+    <div class="loading-banner">
+      <mat-spinner diameter="32"></mat-spinner>
+      <div class="loading-text">
+        <strong>Claude is reviewing your PR&hellip;</strong>
+        <span>This may take up to 3 minutes. Please wait.</span>
+      </div>
+    </div>
+  }
+
+  <!-- ── Results ───────────────────────────────────────────────────────── -->
+  @if (reviewResult(); as result) {
+    <app-review-results [review]="result" />
+  }
+
+</div>
