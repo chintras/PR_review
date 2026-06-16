@@ -5,7 +5,7 @@ obj/
 # Node / Angular
 node_modules/
 dist/
-.angular/cache/
+**/.angular/cache/
 
 # Secrets — never commit real PAT tokens or API keys
 appsettings.Development.json
