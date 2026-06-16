@@ -2,6 +2,11 @@
 bin/
 obj/
 
+# Node / Angular
+node_modules/
+dist/
+.angular/cache/
+
 # Secrets — never commit real PAT tokens or API keys
 appsettings.Development.json
 appsettings.*.local.json

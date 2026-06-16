@@ -27,10 +27,18 @@ public class ClaudeCliReviewService : IClaudeReviewService
         PullRequestDetails prDetails,
         string diffContent,
         string repository,
+        string baseBranch,
+        string prBranch,
         CancellationToken ct = default)
     {
-        var sourceBranch = prDetails.SourceRefName.Replace("refs/heads/", "");
-        var targetBranch = prDetails.TargetRefName.Replace("refs/heads/", "");
+        // Caller-resolved branches win (the base branch comes from the UI textbox);
+        // fall back to PR metadata only when not supplied.
+        var sourceBranch = !string.IsNullOrWhiteSpace(prBranch)
+            ? prBranch
+            : prDetails.SourceRefName.Replace("refs/heads/", "");
+        var targetBranch = !string.IsNullOrWhiteSpace(baseBranch)
+            ? baseBranch
+            : prDetails.TargetRefName.Replace("refs/heads/", "");
 
         var prompt = BuildPrompt(prDetails, sourceBranch, targetBranch, diffContent);
 
@@ -127,6 +135,18 @@ public class ClaudeCliReviewService : IClaudeReviewService
             Base branch: {targetBranch}
             PR branch: {sourceBranch}
             Description: {pr.Description ?? "(no description provided)"}
+
+            ## How to read the diff
+            The section below is a unified diff comparing the base branch
+            ('{targetBranch}') against the PR branch ('{sourceBranch}'). It contains
+            ONLY the lines that changed plus a few lines of surrounding context:
+            - Lines starting with '+' were ADDED by this PR.
+            - Lines starting with '-' were REMOVED by this PR.
+            - Lines starting with a space are unchanged context (shown for orientation only).
+
+            Review ONLY the added/removed lines and how they interact with their
+            context. Do NOT raise issues about pre-existing, unchanged code, and do
+            not assume anything about code that is not present in the diff.
 
             ## Diff
             {diffContent}

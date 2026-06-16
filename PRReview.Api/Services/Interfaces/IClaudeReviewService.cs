@@ -9,5 +9,7 @@ public interface IClaudeReviewService
         PullRequestDetails prDetails,
         string diffContent,
         string repository,
+        string baseBranch,
+        string prBranch,
         CancellationToken ct = default);
 }

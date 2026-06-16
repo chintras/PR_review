@@ -16,12 +16,6 @@ export class ReviewService {
       .pipe(catchError(this.handleError));
   }
 
-  getRepositories(): Observable<Record<string, string>> {
-    return this.http
-      .get<Record<string, string>>(`${this.apiBase}/api/review/repositories`)
-      .pipe(catchError(this.handleError));
-  }
-
   private handleError(error: HttpErrorResponse): Observable<never> {
     let message = 'An unexpected error occurred.';
     if (error.status === 0) {

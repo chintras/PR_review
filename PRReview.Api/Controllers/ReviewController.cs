@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using PRReview.Api.Configuration;
 using PRReview.Api.Models.Requests;
 using PRReview.Api.Models.Responses;
 using PRReview.Api.Services.Interfaces;
@@ -14,28 +12,26 @@ public class ReviewController : ControllerBase
 {
     private readonly IAzureDevOpsService _adoService;
     private readonly IClaudeReviewService _claudeService;
-    private readonly AzureDevOpsOptions _adoOptions;
     private readonly ILogger<ReviewController> _logger;
 
     public ReviewController(
         IAzureDevOpsService adoService,
         IClaudeReviewService claudeService,
-        IOptions<AzureDevOpsOptions> adoOptions,
         ILogger<ReviewController> logger)
     {
         _adoService = adoService;
         _claudeService = claudeService;
-        _adoOptions = adoOptions.Value;
         _logger = logger;
     }
 
     /// <summary>
     /// Triggers a Claude-powered code review for the specified Azure DevOps pull request.
+    /// The owning repository is resolved from the (org-wide unique) PR number; the review
+    /// only covers the changes between the base branch and the PR branch.
     /// </summary>
     /// <param name="request">
-    /// baseBranch: target branch name (e.g. "main").
-    /// prNumber: the PR number.
-    /// repository: alias (e.g. "UI", "BE") or exact repository name.
+    /// baseBranch: target branch to diff against (e.g. "main").
+    /// prNumber: the PR number (organization-wide unique).
     /// prBranch: optional source branch — derived from PR metadata if omitted.
     /// </param>
     [HttpPost]
@@ -46,22 +42,28 @@ public class ReviewController : ControllerBase
         [FromBody] ReviewRequest request,
         CancellationToken ct)
     {
-        var repository = _adoOptions.ResolveRepository(request.Repository);
-
-        _logger.LogInformation(
-            "Review requested — Alias: {Alias} → Repo: {Repo}, PR: #{Pr}, Base: {Base}",
-            request.Repository, repository, request.PrNumber, request.BaseBranch);
-
         try
         {
-            var prDetails = await _adoService.GetPullRequestDetailsAsync(
-                repository, request.PrNumber, ct);
+            // 1. Resolve the PR (and therefore its repository) from the PR number alone.
+            var prDetails = await _adoService.GetPullRequestByIdAsync(request.PrNumber, ct);
 
+            var repository = prDetails.Repository.Name;
+            var prBranch = !string.IsNullOrWhiteSpace(request.PrBranch)
+                ? request.PrBranch!.Trim()
+                : prDetails.SourceRefName.Replace("refs/heads/", "");
+            var baseBranch = request.BaseBranch.Trim();
+
+            _logger.LogInformation(
+                "Review requested — PR #{Pr} → Repo: {Repo}, Base: {Base}, PrBranch: {PrBranch}",
+                request.PrNumber, repository, baseBranch, prBranch);
+
+            // 2. Diff the PR's changes only (merge-base ↔ PR tip), accurate even if merged.
             var diff = await _adoService.GetPullRequestDiffAsync(
-                repository, request.PrNumber, ct);
+                prDetails.Repository.Id, request.PrNumber, ct);
 
+            // 3. Review the diff.
             var review = await _claudeService.ReviewPullRequestAsync(
-                prDetails, diff, repository, ct);
+                prDetails, diff, repository, baseBranch, prBranch, ct);
 
             return Ok(review);
         }
@@ -74,15 +76,5 @@ public class ReviewController : ControllerBase
                 Detail = ex.Message
             });
         }
-    }
-
-    /// <summary>
-    /// Returns the configured repository alias mappings.
-    /// </summary>
-    [HttpGet("repositories")]
-    [ProducesResponseType(typeof(Dictionary<string, string>), StatusCodes.Status200OK)]
-    public IActionResult GetRepositories()
-    {
-        return Ok(_adoOptions.RepositoryAliases);
     }
 }

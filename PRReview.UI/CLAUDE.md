@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Does
 
-Angular 19 SPA that lets users submit an Azure DevOps PR for AI-powered code review. Users select a repository alias, enter a PR number and base branch, and receive categorised review feedback rendered in a Material Design tabbed interface.
+Angular 19 SPA that lets users submit an Azure DevOps PR for AI-powered code review. Users enter a PR number and a base branch (no repository — it is resolved from the PR number by the backend) and receive categorised review feedback rendered in a Material Design tabbed interface.
 
 ## Commands
 
@@ -29,9 +29,9 @@ AppComponent (toolbar + router-outlet)
 **Key files:**
 - `app/app.config.ts` — providers: `provideZoneChangeDetection({ eventCoalescing: true })`, `provideRouter`, `provideHttpClient`, `provideAnimationsAsync`
 - `app/app.routes.ts` — single route: `''` → `ReviewFormComponent`; wildcard redirects to root
-- `app/components/review-form/review-form.component.ts` — `FormBuilder` group with validators; signals: `loading`, `reviewResult`, `repositories`, `selectedRepository`; computed: `selectedRepoDisplay`; fetches repo list on `ngOnInit`, falls back to hardcoded list if API is unreachable
+- `app/components/review-form/review-form.component.ts` — `FormBuilder` group (`baseBranch` text input, `prNumber`, optional `prBranch`) with validators; signals: `loading`, `reviewResult`
 - `app/components/review-results/review-results.component.ts` — receives `ReviewResponse` via `@Input()`; computed signals `categoriesWithItems()` and `totalIssues()`; toggleable raw markdown section
-- `app/services/review.service.ts` — `POST /api/review` and `GET /api/review/repositories`; API base hardcoded to `https://localhost:7015`; errors mapped to user-friendly messages via `catchError`
+- `app/services/review.service.ts` — single `POST /api/review` call; API base hardcoded to `https://localhost:7015`; errors mapped to user-friendly messages via `catchError`
 - `app/models/review.model.ts` — `ReviewRequest`, `ReviewItem`, `ReviewResponse`, `ReviewCategory`; `REVIEW_CATEGORIES` constant drives tab ordering and icons
 
 ## Angular Patterns Used

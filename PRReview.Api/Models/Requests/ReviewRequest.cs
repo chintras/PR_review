@@ -4,6 +4,10 @@ namespace PRReview.Api.Models.Requests;
 
 public class ReviewRequest
 {
+    /// <summary>
+    /// Target/base branch to compare the PR against (e.g. "main", "develop").
+    /// The owning repository is resolved automatically from <see cref="PrNumber"/>.
+    /// </summary>
     [Required]
     public string BaseBranch { get; set; } = string.Empty;
 
@@ -13,11 +17,4 @@ public class ReviewRequest
 
     /// <summary>PR source branch. If omitted, it is derived from the PR metadata.</summary>
     public string? PrBranch { get; set; }
-
-    /// <summary>
-    /// Repository alias (e.g. "UI", "BE") or exact repository name.
-    /// Aliases are resolved via AzureDevOps:RepositoryAliases in appsettings.
-    /// </summary>
-    [Required]
-    public string Repository { get; set; } = string.Empty;
 }

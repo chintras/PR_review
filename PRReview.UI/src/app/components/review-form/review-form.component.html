@@ -18,34 +18,13 @@
         <div class="form-row">
 
           <!-- Base Branch -->
-          <mat-form-field appearance="outline" class="field-xs">
-            <mat-label>Base Branch</mat-label>
-            <mat-select formControlName="baseBranch">
-              @for (branch of baseBranchOptions; track branch) {
-                <mat-option [value]="branch">
-                  <mat-icon class="option-icon">account_tree</mat-icon>
-                  {{ branch }}
-                </mat-option>
-              }
-            </mat-select>
-            <mat-icon matPrefix>merge_type</mat-icon>
-          </mat-form-field>
-
-          <!-- Repository -->
           <mat-form-field appearance="outline" class="field-md">
-            <mat-label>Repository</mat-label>
-            <mat-select formControlName="repository">
-              <mat-select-trigger>{{ selectedRepoDisplay() }}</mat-select-trigger>
-              @for (repo of repositories(); track repo.alias) {
-                <mat-option [value]="repo.alias">
-                  <span class="repo-alias">{{ repo.alias }}</span>
-                  <span class="repo-name"> - {{ repo.name }}</span>
-                </mat-option>
-              }
-            </mat-select>
-            <mat-icon matPrefix>folder_open</mat-icon>
-            @if (form.get('repository')?.hasError('required') && form.get('repository')?.touched) {
-              <mat-error>Repository is required</mat-error>
+            <mat-label>Base Branch</mat-label>
+            <input matInput formControlName="baseBranch" placeholder="e.g. main or develop">
+            <mat-icon matPrefix>merge_type</mat-icon>
+            <mat-hint>Branch the PR is compared against</mat-hint>
+            @if (form.get('baseBranch')?.invalid && form.get('baseBranch')?.touched) {
+              <mat-error>{{ baseBranchError }}</mat-error>
             }
           </mat-form-field>
 

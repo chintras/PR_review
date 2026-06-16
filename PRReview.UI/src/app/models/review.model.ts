@@ -1,7 +1,6 @@
 export interface ReviewRequest {
   baseBranch: string;
   prNumber: number;
-  repository: string;
   prBranch?: string;
 }
 
