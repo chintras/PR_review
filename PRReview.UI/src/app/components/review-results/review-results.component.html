@@ -28,7 +28,7 @@
 </mat-card>
 
 <!-- ── Tabbed Category Tables ────────────────────────────────────────────── -->
-@if (categoriesWithItems().length > 0) {
+@if (hasSeriousIssues()) {
   <mat-card class="tabs-card">
     <mat-tab-group animationDuration="200ms" class="review-tabs">
       @for (cat of categoriesWithItems(); track cat.category.key) {
@@ -100,7 +100,7 @@
 }
 
 <!-- ── Empty State ──────────────────────────────────────────────────────── -->
-@if (totalIssues() === 0) {
+@if (!hasSeriousIssues()) {
   <mat-card class="empty-card">
     <mat-card-content>
       <mat-icon class="empty-icon">check_circle</mat-icon>

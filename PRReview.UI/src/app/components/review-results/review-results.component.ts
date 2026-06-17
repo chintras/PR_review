@@ -67,6 +67,14 @@ export class ReviewResultsComponent implements OnChanges {
     this.categories().reduce((sum, c) => sum + c.items.length, 0)
   );
 
+  // Only Blockers / Major Issues warrant the review tables. Minor suggestions,
+  // nits, and praise on their own still count as a "great PR".
+  hasSeriousIssues = computed(() =>
+    this.categories().some(
+      c => (c.category.key === 'blockers' || c.category.key === 'majorIssues') && c.items.length > 0
+    )
+  );
+
   hasItems(items: ReviewItem[]): boolean {
     return items.length > 0;
   }
